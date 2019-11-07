@@ -44,8 +44,17 @@ ELSIF car(l) > car(cdr(l)) THEN (cons(car(cdr(l)),c_bubbling(cons(car(l),cdr(cdr
 ELSE (cons(car(l), c_bubbling(cdr(l), n - 1,cont+1)`1),c_bubbling(cdr(l), n - 1,cont+1)`2)
 ENDIF
 MEASURE n
-
-
+%função para realizar a contagem de bubling no bublle_sort_aux
+c_bubblesort_aux(l, ( n : below[l`length ] ),cont) : RECURSIVE [list[nat],nat] =
+IF n = 0 THEN (l,cont)
+ELSE (c_bubblesort_aux(c_bubbling(l, n,cont)`1, n-1,cont)`1,c_bubbling(l, n,cont)`2)
+ENDIF
+MEASURE n
+%função para contar bublin no bublesort
+c_bubblesort(l) : [list[nat],nat] = 
+IF null?(l) THEN (l,0)
+ELSE c_bubblesort_aux(l, l`length - 1 , 0)
+ENDIF
 
 
 
