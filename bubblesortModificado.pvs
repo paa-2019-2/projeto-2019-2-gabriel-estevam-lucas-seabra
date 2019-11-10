@@ -1,7 +1,9 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Grupo de Teoria da Computacao, Universidade de Brasilia
-%%% M. Ayala-Rincon, Flavio L.C. de Moura
-%%% Last modification:  April 28 2015
+﻿%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Grupo de Projeto e Análise de Algoritmos - Turma B
+%%% Alunos: Gabriel de Oliveira Estevam 
+%%%         Lucas Seabra
+%%% Professor: Flavio L.C. de Moura
+%%% Última modificação: 10/11/2019
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 bubblesort : THEORY
@@ -14,6 +16,13 @@ i,j,k,n,cont : VAR nat
 
 % This is the bubbling function that moves the greates key in
 % the n-prefix of a list l to the n-th position of the list. 
+
+% Primeiro IF verifica se chegou no fim do vetor, caso tenha chegado retorna a lista.
+% Segundo IF verifica se o primeiro elemento da lista e maior do que o primeiro elemento da calda da lista,
+% caso seja, troca os elementos formando uma nova lista e ordena a nova calda da lista (recursão).
+% ELSE quando o primeiro elemento da lista é menor do que o primeiro elemento da calda da lista não é preciso
+% realizar troca, então, é criada um lista com início igual a primeiro elemento e a calda é ordenada (recursão). 
+ 
 bubbling(l, ( n : below[ l`length])) : RECURSIVE  list[nat] =
 IF n = 0 THEN l
 ELSIF car(l) > car(cdr(l)) THEN cons(car(cdr(l)), bubbling(cons(car(l),cdr(cdr(l))), n - 1))
@@ -24,6 +33,12 @@ MEASURE n
 % This is the auxiliary function that calls bubbling addequately
 % starting from n. The result is that the first n+1 elements of the
 % given input list will be sorted. 
+
+% Verifica se a lista é unitária, caso seja retorna a lista, já que a lista unitária é ordenada.
+% Caso contrário ordena lista chamando função bubbling.
+% Recursão para garantir que todos os N elementos da lista irão ser comparados com
+% os N - 1 elementos da lista.
+
 bubblesort_aux(l, ( n : below[l`length ] )) : RECURSIVE list[nat] =
 IF n = 0 THEN l
 ELSE bubblesort_aux(bubbling(l, n), n-1)
@@ -33,10 +48,15 @@ MEASURE n
 % This is the main function which calls the auxiliary function
 % bubblesort_aux starting from length of the input list minus one.  
 % As result, bubblesort_aux will sort the whole input list.
+
+% Confere se a lista é nula, caso seja retorna ela mesma, já que a lista nula é ordenada.
+% Caso não seja chama função bubblesort_aux.
+
 bubblesort(l) : list[nat] = 
 IF null?(l) THEN l
 ELSE bubblesort_aux(l, l`length - 1 )
 ENDIF
+
 %função que conta o numero de comparações em bubbling
 c_bubbling(l, ( n : below[ l`length]),cont) : RECURSIVE  [list[nat],nat] =
 IF n = 0 THEN (l,cont)
@@ -44,20 +64,18 @@ ELSIF car(l) > car(cdr(l)) THEN (cons(car(cdr(l)),c_bubbling(cons(car(l),cdr(cdr
 ELSE (cons(car(l), c_bubbling(cdr(l), n - 1,cont+1)`1),c_bubbling(cdr(l), n - 1,cont+1)`2)
 ENDIF
 MEASURE n
+
 %função para realizar a contagem de bubling no bublle_sort_aux
 c_bubblesort_aux(l, ( n : below[l`length ] ),cont) : RECURSIVE [list[nat],nat] =
 IF n = 0 THEN (l,cont)
 ELSE (c_bubblesort_aux(c_bubbling(l, n,cont)`1, n-1,cont)`1,c_bubbling(l, n,cont)`2)
 ENDIF
 MEASURE n
+
 %função para contar bublin no bublesort
 c_bubblesort(l) : [list[nat],nat] = 
 IF null?(l) THEN (l,0)
 ELSE c_bubblesort_aux(l, l`length - 1 , 0)
 ENDIF
-
-
-
-
 
 END bubblesort
