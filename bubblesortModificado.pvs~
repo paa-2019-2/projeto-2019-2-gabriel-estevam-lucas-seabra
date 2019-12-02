@@ -90,7 +90,7 @@ c_bubbling(l,cont)`2 <= length(l)
 c_bubbling_sum_n : LEMMA
 FORALL (l : list[nat])(cont: below (length(l))) :c_bubbling(l,cont)`2 = cont
 bubblesort_aux_list_dont_chage_number: LEMMA
-FORALL(l : list[nat])(cont: below (length(l)))(l2: list[nat]) :(length(l))=(length(l2)) implies c_bubblesort_aux(l,cont)`2 = c_bubblesort_aux(l2,cont)`2
+FORALL(l : list[nat])(cont: below (length(l)))(l2: list[nat]) :(length(l))=(length(l2)) or cont<0 implies c_bubblesort_aux(l,cont)`2 = c_bubblesort_aux(l2,cont)`2
 bubblesort_aux_sum_nquadratic : LEMMA
 FORALL (l : list[nat])(cont: below (length(l))) :c_bubblesort_aux(l,cont)`2 = (cont^2 +cont)/2
 

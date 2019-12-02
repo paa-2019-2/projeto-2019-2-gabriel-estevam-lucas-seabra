@@ -294,7 +294,7 @@
     (list type-decl nil list_adt nil)
     (boolean nonempty-type-decl nil booleans nil)
     (bool nonempty-type-eq-decl nil booleans nil)
-    (PRED type-eq-decl nil defined_types nil) nil
+    (PRED type-eq-decl nil defined_types nil)
     (AND const-decl "[bool, bool -> bool]" booleans nil)
     (number_field_pred const-decl "[number -> boolean]" number_fields
      nil)
@@ -325,7 +325,6 @@
      integers nil)
     (car adt-accessor-decl "[(cons?) -> T]" list_adt nil)
     (cons adt-constructor-decl "[[T, list] -> (cons?)]" list_adt nil)
-    nil nil
     (- const-decl "[numfield, numfield -> numfield]" number_fields nil)
     (numfield nonempty-type-eq-decl nil number_fields nil)
     (real_ge_is_total_order name-judgement "(total_order?[real])"
@@ -712,6 +711,9 @@
  (bubblesort_aux_sum_nquadratic_TCC1 0
   (bubblesort_aux_sum_nquadratic_TCC1-1 nil 3783284463
    ("" (subtype-tcc) nil nil) nil nil))
+ (bubblesort_aux_sum_nquadratic_TCC2 0
+  (bubblesort_aux_sum_nquadratic_TCC2-1 nil 3784217674
+   ("" (subtype-tcc) nil nil) nil nil))
  (bubblesort_aux_sum_nquadratic 0
   (bubblesort_aux_sum_nquadratic-1 nil 3783284467
    ("" (skeep)
@@ -723,7 +725,38 @@
               (("1" (expand "c_bubblesort_aux" 1)
                 (("1" (lift-if)
                   (("1" (prop)
-                    (("1" (assert) nil nil) ("2" (postpone) nil nil))
+                    (("1" (assert) nil nil)
+                     ("2" (inst -1 "x!1 - 1")
+                      (("1" (assert)
+                        (("1"
+                          (lemma
+                           "bubblesort_aux_list_dont_chage_number")
+                          (("1"
+                            (inst -1 "l" "x!1-1"
+                             "c_bubbling(l, x!1)`1")
+                            (("1" (lemma "c_bubbling_preserv_length")
+                              (("1"
+                                (inst -1 "l" "x!1")
+                                (("1"
+                                  (assert)
+                                  (("1"
+                                    (hide -1)
+                                    (("1"
+                                      (lemma "c_bubbling_sum_n")
+                                      (("1"
+                                        (inst -1 "l" "x!1")
+                                        (("1" (assert) nil nil))
+                                        nil))
+                                      nil))
+                                    nil))
+                                  nil))
+                                nil))
+                              nil))
+                            nil))
+                          nil))
+                        nil)
+                       ("2" (assert) nil nil))
+                      nil))
                     nil))
                   nil))
                 nil))
@@ -731,7 +764,8 @@
             nil))
           nil))
         nil)
-       ("2" (postpone) nil nil) ("3" (postpone) nil nil))
+       ("2" (typepred "cont!1") (("2" (grind) nil nil)) nil)
+       ("3" (postpone) nil nil))
       nil))
     nil)
    nil shostak))
