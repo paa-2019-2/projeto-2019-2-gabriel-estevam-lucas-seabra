@@ -77,12 +77,15 @@ length_dont_reduce : LEMMA
 FORALL (l : list[nat]): length(l) >= 0
 c_bubbling_equiv_bubbling : LEMMA
  FORALL (l:list[nat])(n:below (length(l))) : bubbling(l,n)= c_bubbling(l,n)`1
+  c_bubblessort_aux_equiv_bubblesort_aux  : LEMMA
+ FORALL (l:list[nat])(n:below (length(l))) : bubblesort_aux(l,n)= c_bubblesort_aux(l,n)`1
  c_bubblessort_equiv_bubblesort  : LEMMA
  FORALL (l:list[nat]) : bubblesort(l)= c_bubblesort(l)`1
  
 
 c_bubbling_preserv_length: LEMMA
 FORALL(l : list[nat])(cont: below (length(l))) : length(l)=length(c_bubbling(l,cont)`1)
+
 c_bubbling_is_linear : LEMMA
 FORALL (l : list[nat])(cont: below (length(l))) :
 c_bubbling(l,cont)`2 <= length(l)
