@@ -72,35 +72,49 @@ ENDIF
 
 
 
-
+%lema para provar que qualquer tamanho de lista é nao negativo
 length_dont_reduce : LEMMA
 FORALL (l : list[nat]): length(l) >= 0
+
+
+%lema para provar que o c_bubbling não reduz o tamanho de nenhuma lista
 c_bubbling_preserv_length: LEMMA
 FORALL(l : list[nat])(cont: below (length(l))) : length(l)=length(c_bubbling(l,cont)`1)
+
+
+%lema para provar que o bubbling e o c_bubbling retornam a mesma lista
 c_bubbling_equiv_bubbling : LEMMA
  FORALL (l:list[nat]) (n:below (length(l))) : bubbling(l,n)= c_bubbling(l,n)`1
+
+
+ %lema para provar que o bubblessort_aux e c_bubblesort_aux retornam a mesma lista
   c_bubblessort_aux_equiv_bubblesort_aux  : LEMMA
  FORALL (l:list[nat],n:below (length(l))) : bubblesort_aux(l,n)= c_bubblesort_aux(l,n)`1
+
+%lema para provar que bubblesort e c_bubblesort retornam a mesma lista
  c_bubblessort_equiv_bubblesort  : LEMMA
  FORALL (l:list[nat]) : bubblesort(l)= c_bubblesort(l)`1
  
-
-
-
+%lema para provar o limite do custo do c_bubbling
 c_bubbling_is_linear : LEMMA
 FORALL (l : list[nat])(cont: below (length(l))) :
 c_bubbling(l,cont)`2 <= length(l)
 
+%lema para provar numero de vezes que c_bubbling é executado cada vez que é chamado
 c_bubbling_sum_n : LEMMA
 FORALL (l : list[nat])(cont: below (length(l))) :c_bubbling(l,cont)`2 = cont
+
+%lema para provar que os elementos de duas lista de tamanhos iguais não influenciam no numero de vezes que c_bubbling será executado 
 bubblesort_aux_list_dont_chage_number: LEMMA
 FORALL(l : list[nat])(cont: below (length(l)))(l2: list[nat]) :(length(l))=(length(l2))  implies c_bubblesort_aux(l,cont)`2 = c_bubblesort_aux(l2,cont)`2
+
+% lema para provar o numero de vezes que c_bubbling é executado a cada chamada de x_bubblesort_aux 
 bubblesort_aux_sum_nquadratic : LEMMA
 FORALL (l : list[nat])(cont: below (length(l))) :c_bubblesort_aux(l,cont)`2 = (cont^2 +cont)/2
 
 
 
-
+%prova da complexidade de c_bubbling
 bubbling_is_quadratic :LEMMA
 FORALL (l : list[nat]):
 member(LAMBDA(n:nat):c_bubblesort(l)`2, Omicron(LAMBDA(n:nat):length(l)^2))
