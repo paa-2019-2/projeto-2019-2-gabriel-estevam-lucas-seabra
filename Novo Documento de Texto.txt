@@ -1,0 +1,7 @@
+Primeniramente foi provados um lema trivial sobre c_bubbling preservar o tamanho da lista .
+Para este fim é usada a indução forte baseada no tamanho da lista visto que bubbling possui uma estrutura recursiva cuja condição de parada e a lista nula.
+Para evitar problemas futuros são descartados os casos da lista vazia e da lista unitaria l=null e cdr(l)= null ao assumir que a lista ja assumiu esses valores.Em seguida a função é dividida em 3 casos criados a partir de sua propria definição onde 1 deles (cont=0) pode ser automaticamente dado come verdadeiro ao ser aplicada a função, e os outros 2 devem ser provados usando-se a hipotese de indução que é instanciada com os parametros da recursão do c_bubbling em cada um dos casos gerando assim provas triviais onde x = y -> 1+x = 1+y.
+
+Em seguida é provado que c_bubbling e bubbling retornam a mesma lista caso tenham os mesmos parametros usando a mesma logica da prova anterior.
+
+O proximo lema provado foi a equivalencia de bubblesort_aux e c_bubblesort_aux para tanto é realizada uma indução no segundo parametor de bubblesort aux um contador que vai de length-1 até 0, esta indução deve ser feita neste parametro pois ele é a condição de parada do algoritmo de forma a se tornar o unico capaz de gerar uma base de indução
