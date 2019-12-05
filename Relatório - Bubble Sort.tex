@@ -1,0 +1,122 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{pdfsync}
+\usepackage[all]{xy}
+\usepackage{color}
+
+\title{{\large Universidade de Brasília \\ Instituto de Ciências Exatas \\
+Departamento de Ciência da Computação} \\[1cm]
+117536 - Projeto e Análise de Algoritmos Turma: B\\[.5cm]
+{\bf Formalização da complexidade de tempo no pior caso do algoritmo Bubble Sort}}
+\author{Gabriel de Oliveira Estevam - 17/0142591 \\
+        Lucas Seabra Gomes Oliveira - 17/0039951}
+\date{\today}
+
+\begin{document}
+\maketitle
+\newpage
+
+\section{Introdução}
+O relatório tem como objetivo descrever as etapas de formalização da complexidade de tempo no pior caso do algoritmo de ordenação Bubble Sort. Para realizar tal formalização foi necessário utilizar o software assistente de provas PVS. A complexidade temporal de Bubble Sort encontrada no processo de formalização foi $O(n^2)$, onde n significa a quantidade de elementos da lista de entrada que será ordenada pelo algoritmo.  
+
+Omicron é definido como $g(n) = O(f(n))$, onde existem constantes positivas c e n0 tais que $g(n) \leq c.f(n),$ para todo $n \geq n0$.
+
+\section{Apresentação do Problema}
+Como já dito, o objetivo do trabalho é formalizar a complexidade temporal de Bubble Sort. A complexidade temporal de um algoritmo é o tempo gasto para o processamento de uma entrada de determinado tamanho, porém, será feita uma análise assistótica, ou seja, vamos analisar a complexidade temporal do algoritmo considerando tamanhos de entradas extremanente altos. Para calcular o tempo será considerado que cada operação do algoritmo possui tempo constante.  
+
+\subsection{Análise assintótica}
+
+
+Para encontrar a complexidae de Bubble, inicialmente será feita a análise das três funções que compõem o Bubble Sort de acordo com o arquivo bubblesort.pvs, são elas:
+
+\begin{itemize}
+    \item bubblesort
+    \item bubblesort\_aux
+    \item bubbling
+\end{itemize}
+
+Começando pela função principal bubblesort, é passado para ela a lista L, então, é verificado se a lista informada é nula, caso seja retorna a própria lista, caso contrário chama a função bubblesort-aux informando a lista L e o tamanho (length) da lista - 1. Podemos verificar que bubblesort executa até então em tempo constante.
+
+A função bubblesort\_aux recebe a lista L e um número natural referente ao tamanho de L - 1. Nessa função é verificado se a lista L é unitária, caso seja, retorna a função bubblesort, caso contrário, chama recursivamente a função bubblesort-aux passando como parâmetro o resultado da função bubbling((l, n), n - 1), onde n é o número natural referente ao tamanho de L - 1. A função bubblesort\_aux é chamada recursivamente até n ser igual a 0, ou seja, (n-1) + (n-2) + (n-3) + ..... até n = 0.
+
+Agora será analisada a função bubbling que é feita sempre antes da chamada recursiva de bubblesort-aux. A função bubbling é a função que realiza a ordenação dos elementos, ela recebe uma lista L e um número natural n. É verificado se o n é igual a 0, caso seja retorna lista L, caso contrário verifica se o primeiro elemento de L é maior que o primeiro elemento da calda da lista, caso seja, troca esses elementos e ordena a nova calda da lita chamando bubbling(calda de L, n - 1), caso contrário, ou seja, se o primeiro elemento da lista é menor ou igual ao primeiro elemento da calda da lista, mantém o primeiro elemento como está e ordena a calda da lista chamando bubbling(calda de L, n - 1). Observe que bubbling também executa como bubblesort-aux, ou seja, existe um n que é decrementado até 0: (n-1) + (n-2) + (n-3) + ..... até n = 0. Porém, esse n da função bubbling é o n decrementado informado pela função bubblesort\_aux. Precisamos verificar qual é o resultado do somatório dessas decresmentações de n:
+
+\begin{equation}
+    \sum_{i=1}^{n} i = (n - 1) + (n - 2) + ... + 0	
+\end{equation}
+
+É possível perceber que o resultado da equação acima é o somatório de uma progreção aritmética. Então, 
+
+\begin{equation}
+    \sum_{i=1}^{n} i = (((n - 1) + 0)n)/2 = (n^{2} - n)/2
+\end{equation}
+
+Considerando que essa é uma análise assistótica, então, a complexidade temporal entrada até então de Bubble Sort é $O(n^2)$, já que consideramos o polinômio de maior grau do resultado encontrado $(n^{2} - n)/2$.
+\newpage
+Agora para provar que Bubble Sort é $O(n^2)$ no assistente de provas PVS precisamos de um quantificador para contar o número de comparações feitas de acordo com o tamanho da lista. Nesse caso definimos três funções, são elas: 
+
+\begin{itemize}
+    \item c\_bubblesort
+    \item c\_bubblesort\_aux
+    \item c\_bubbling
+\end{itemize}
+
+Essas funções retornam um contator que indica a quantidade de comparações feitas durante sua execução. Lembrando que essas funções também são equivalentes as funções: bubblesort, bubblesort\_aux e bubbling, respectivamente, para provar isso foram criados os seguintes lemmas:
+
+\begin{itemize}
+    \item c\_bubbling\_equiv\_bubbling
+    \item c\_bubblessort\_aux\_equiv\_bubblesort\_aux
+    \item c\_bubbling\_equiv\_bubbling
+\end{itemize}
+
+O somador do contador foi incluido na função mais "profunda" de Bubble Sort que é a c\_bubbling. Como já dito, existem duas situações que são comparados os elementos da lista para ordenação:
+
+\begin{itemize}
+    \item Quando o primeiro elemento da lista é MAIOR que o primeiro elemento da calda da lista, então, troca os elementos e ordena a nova calda da lista.
+    \item Quando o primeiro elemento da lista é MENOR ou IGUAL ao primeiro elemento da calda da lista, então, mantém os elementos e ordena a calda da lista.
+\end{itemize}
+
+Em ambas as situações é adicionado 1 ao contador de comparações. 
+\newpage 
+Para provar a complexidade temporal de Bubble Sort foram necessários alguns lemmas, o primeiro lemma c\_bubbling\_preserv\_length diz que a função c\_bubbling não diminui o tamanho da lista e sim retorna uma lista de mesmo tamanho. Para realizar a prova desse lemma utilizamos indução forte baseada na redução da lista. Primeiro foram tratatos os casos de lista nula e unitária usando provas a parte para evitar problemas futuros na prova. Em seguida, foi utilizada a definição do c\_bubbling que dividiu a prova em duas: Ambas foram resolvidas de forma semelhante, porém, tendo a hipótese de indução instanciada de formas diferentes (baseadas na lista dada como parâmetro para sua função recursiva). Por fim, é gerada uma resolução trivial, onde:
+
+\begin{equation}
+ ( A = B ) \implies ( A + 1 = B + 1 )
+ \end{equation}
+
+Outro lemma necessário foi c\_bubbling\_sum\_n que define o custo de c\_bubbling, onde foi provado que seu custo é igual ao segundo parâmetro da função, sendo este o número natural decrementado a cada recursão. Utilizamos os mesmos principios aplicados na prova do lemma anterior. 
+
+O próximo lemma importante foi bubblesort\_aux\_list\_dont\_chage\_number que diz que duas listas de mesmo tamanho sendo dadas como primeiro parâmetro para a função c\_bubblesort\_aux, e esta função tendo um segundo parâmetro igual em ambas as instâncias o resultado do contator de comparações irá ser igual nas duas funções, de forma que o único valor influenciador para o contador seria o tamanho da lista. Nesse caso foi realizada uma indução forte, de uma forma um pouco diferente. Essa indução tem como base o segundo parâmetro de c\_bubblesort\_aux subtraido do natural '1' e possui um IF dentro de sua estrutura. Esse IF foi feito com o objetivo de descartar automaticamente os casos onde a hipótese de indução seja falsa (onde o número subtraído de '1' tenha um resultado negativo, gerando assim uma contradição, pois esse parâmetro deve obrigatoriamente ser natural), algo que sem este IF não necessariamente seria possível de ser provado. Utilizando a definição de c\_bubblesort\_aux foi provado automaticamente o caso simples, onde o valor do segundo parâmetro de c\_bubblesort\_aux é igual a zero. A hipótese da indução foi duplicada para que possa ser utilizada com dois parâmetros diferentes, o primeira hipótese foi instanciada com o parâmetro c\_bubbling(lista 2, n - 1), já o segunda foi instanciada com o parâmetro c\_bubbling(lista 1, n - 1), por fim, foi necessário utilizar o lemma de que c\_bubbling preserva o tamanho da lista para ambos os casos, tanto para a lista 1 quanto para a lista 2. Para finalizar a prova foi utilizado o lemma do custo de c\_bubbling tanto para a lista 1 quanto para a lista 2. Assim, chegamos ao seguinte caso trivial: 
+\newline
+
+( c\_bubbling(lista 1, n) = n ) \wedge ( c\_bubbling(lista 2, n) = n ) \wedge 
+
+( c\_bubblesort\_aux(c\_bubbling(lista 1, n - 1), n - 2) =
+
+c\_bubblesort\_aux(lista 1, n - 2) ) \wedge 
+
+( c\_bubblesort\_aux(c\_bubbling(lista 2, n - 1), n - 2) = 
+
+
+c\_bubblesort\_aux(lista 1, n - 2) ) \implies 
+
+
+( c\_bubblesort\_aux(c\_bubbling(lista 2, n - 1), n - 2) + n =
+
+c\_bubblesort\_aux(c\_bubbling(lista 1, n - 1), n - 2)  + n )
+\newline
+
+O restante dos casos desta prova são os casos onde a hipótese de indução é falsa, então, é necessário provar um absurdo, bastando assim aplicar a própria definição dos parâmetros que geram hipótese falsa para gerar tal absurdo. 
+
+O próximo lemma a ser provado é o bubblesort\_aux\_sum\_nquadratic onde é provado que o número de vezes que c\_bubbling é executado a cada chamada de c\_bubblesort\_aux(l, n) = $(n^{2} + n)/2$, para isso foi utilizado a indução forte de forma identica ao lemma bubblesort\_aux\_list\_dont\_chage\_number. Foram provados separadamente os casos onde o n é igual a zero, (n - 1) é igual a zero, a lista é vazia e a lista é unitária, todos esses casos automaticamente, por serem casos de resultados de tamanhos definidos. Em seguida, foi instanciado a hipótese de indução com valor (n - 1). Foi aplicado o lemma bubblesort\_aux\_list\_dont\_chage\_number para provar que a lista retornada por c\_bubbling usada como parâmetro da recursão de c\_bubblesort\_aux não altera o contador de número de comparações retornado para c\_bubblesort\_aux. Em seguida, foi aplicado o lemma c\_bubbling\_preserv\_length para garantir que o lemma bubblesort\_aux\_list\_dont\_chage\_number é válido para a lista l dada como parâmetro de c\_bubblesort\_aux. Por fim, é aplicado um último lemma c\_bubbling\_sum\_n para obter o custo de c\_bubbling. Gerando assim um caso, onde: tanto a lista retornada por c\_bubbling de l quanto a lista l, sendo listas usadas como parâmetro de uma função c\_bubblesort\_aux retornaram o mesmo valor, e c\_bubblesort\_aux(l, n - 1)`2 = ( ( n - 1 ) * ( n - 1) - (n - 1) ) / 2 e que c\_bubbling(l, n) = n implica que c\_bubblesort\_aux(c\_bubbling(l, n - 1), n) + c\_bubbling(l, n) = $(n^{2} + n)/2$, algo que utilizando manipulações algébricas simples gera um caso trivial. 
+
+O último lemma provado foi bubbling\_is\_quadratic que prova que a complexidade temporal de Bubble Sort é quadrada no tamanho da lista de entrada. Para isso, não foi necessário o uso da indução, foi uma prova simples, foram aplicadas as definições de Omicron e c\_bubblesort e foram todos instanciados de forma que os elementos universais podem assumir qualquer valor e os elementos existenciais assumiram um valor específico, no caso o valor escolhido foi c = 2 e n0 = 0. Sabendo que o c é um valor que multiplicado pelo resultado de Omicron será maior que todos os possíveis resultados da função declarada no Omicron e n0 neste caso é o tamanho mínimo da lista do c\_bubblesort. Essa prova foi dividida em dois casos: um caso simples onde a lista é nula, logo a definição é válida pois 0 = 0, e o caso onde entramos no c\_bubblesort\_aux. Para provar este caso foi aplicado o lemma do custo de c\_bubblesort\_aux (bubblesort\_aux\_sum\_nquadratic) que foi instanciado com a própria lista que queremos provar e o tamanho da lista - 1. Lembrando que estes são os próprios parâmetros da função bubblesort que queremos provar. Assim, geramos uma verdade simples, onde c\_bubblesort\_aux(lista, n) = $(( n - 1 ) * ( n - 1) - (n - 1) ) / 2$, tendo n = tamanho da lista - 1, algo que é menor que $2n^{2}$ e então chegamos a um caso trivial. Portanto, a complexidade temporal de Bubble Sort $O(n^2)$, onde n é o tamanho da lista de entrada.
+
+\section{Conclusão}
+Conseguimos provar a complexidade temporal do algoritmo Bubble Sort que é $O(n^2)$ utilizando o software assistente de prova PVS. Esse trabalho não foi fácil, pois nenhum dos membros da dupla tinha experiência com o software e com formalização de provas, mesmo assim, foi possível aprender e aplicar vários conceitos ensinados nas aulas da matéria de Projeto e Análise de Algoritmos. Finalizamos o trabalho com sentimento de vitória e agradecemos o professor Flávio pelos ensinamentos. 
+
+
+\end{document}
